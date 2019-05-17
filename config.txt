@@ -1,5 +1,5 @@
-pleroma_hostname: pleroma.cat
-pleroma_db: splapleroma_prod
-pleroma_db_user: splapleroma        
-grafana_db: pleroma_stats  
-grafana_db_user: splapleroma  
+pleroma_hostname: pleroma_server
+pleroma_db: pleroma_db_name
+pleroma_db_user: pleroma_db_user        
+grafana_db: grafana_db_name  
+grafana_db_user: grafana_db_user  
