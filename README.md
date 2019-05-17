@@ -43,3 +43,5 @@ DATETIME TIMESTAMPTZ
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL datasource!
 It gets all needed data from Pleroma server API and its Postgresql database and then store stats to a new Postgresql database created above, to feed Grafana with their values.
 
+![Grafana showing Pleroma stats](./pictures/image.png)
+
