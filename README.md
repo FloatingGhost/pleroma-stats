@@ -6,7 +6,7 @@ Python script that gets stats data from [Pleroma](https://pleroma.social) API.
 ### Dependencies
 
 -   **Python 2**
--   Grafana server
+-   Grafana
 -   Postgresql server 
 -   Everything else at the top of `pleroma-stats.py`!
 
