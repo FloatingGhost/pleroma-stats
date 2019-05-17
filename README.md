@@ -15,7 +15,7 @@ Python script that gets stats data from [Pleroma](https://pleroma.social) API.
 1. Edit `config.txt` to specify the hostname of the Pleroma server you would like to get data from, its DB 
    name and user and the DB name and user to use from Grafana.
 
-2. Create one Postgresql database for Grafana, in example 'pleroma-stats', with two tables:
+2. Create one Postgresql database for Grafana, in example 'pleroma_stats', with two tables:
 
 CREATE TABLE stats(
 DATETIME TIMESTAMPTZ PRIMARY KEY NOT NULL,
