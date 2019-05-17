@@ -1,7 +1,7 @@
 Graphical Pleroma's stats with Python + Postgresql+ Grafana
 ===========================================================
 
-Python script that gets stats data from Pleroma API [Mastodon](https://github.com/tootsuite/mastodon).
+Python script that gets stats data from [Pleroma](https://pleroma.social) API.
 
 ### Dependencies
 
