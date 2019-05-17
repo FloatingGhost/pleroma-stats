@@ -171,72 +171,45 @@ finally:
 #  columns server | since | days | inserted_at | datetime
 #########################################################################################
 
-try:
-
-  conn = None
-  conn = psycopg2.connect(cstring_grafana)
-
-  cur = conn.cursor()
-
-  cur.execute("SELECT * from unreached_servers")
-  row = cur.fetchone()
-
-  if row > 0:
-
-    insert_row = """INSERT INTO unreached_servers(server, since, days, inserted_at)
+insert_row = """INSERT INTO unreached_servers(server, since, days, inserted_at)
              VALUES(%s,%s,%s,%s) ON CONFLICT DO NOTHING;"""
-    conn = None
+conn = None
 
-    i = 0
+i = 0
 
-    while i < (len(hosts_unreached)):
+while i < (len(hosts_unreached)):
 
-      try:
+  try:
 
-        conn = psycopg2.connect(cstring_grafana)
+    conn = psycopg2.connect(cstring_grafana)
 
-        cur = conn.cursor()
+    cur = conn.cursor()
 
-        # execute INSERT server, since, days, inserted_at
-        cur.execute(insert_row, (hosts_unreached[i], hosts_unreached_since[i], elapsed_days[i], inserted[i]))
-        # execute UPDATE
-        cur.execute("UPDATE unreached_servers SET days=(%s) where server=(%s)", (elapsed_days[i], hosts_unreached[i]))
-        cur.execute("UPDATE unreached_servers SET datetime=(%s) where server=(%s)", (ara, hosts_unreached[i]))    
+    # execute INSERT server, since, days, inserted_at
+    cur.execute(insert_row, (hosts_unreached[i], hosts_unreached_since[i], elapsed_days[i], inserted[i]))
+    # execute UPDATE
+    cur.execute("UPDATE unreached_servers SET days=(%s) where server=(%s)", (elapsed_days[i], hosts_unreached[i]))
+    cur.execute("UPDATE unreached_servers SET datetime=(%s) where server=(%s)", (ara, hosts_unreached[i]))    
     
-        # delete back on life servers
-        cur.execute("DELETE from unreached_servers where datetime <> %s", (ara,))
+    # delete back on life servers
+    cur.execute("DELETE from unreached_servers where datetime <> %s", (ara,))
     
-        # commit data
-        conn.commit()
+    # commit data
+    conn.commit()
 
-        # close the connection
-        cur.close()
-
-        i = i+1
-
-      except (Exception, psycopg2.DatabaseError) as error:
-
-        print(error)
-        sys.exit()
-
-      finally:
-
-        if conn is not None:
-
-          conn.close()
-
-  else:
-
+    # close the connection
     cur.close()
 
-except (Exception, psycopg2.DatabaseError) as error:
+    i = i+1
 
-  print(error)
-  sys.exit()  
+  except (Exception, psycopg2.DatabaseError) as error:
 
-finally:
+    print(error)
+    sys.exit()
 
-  if conn is not None:
+  finally:
+
+    if conn is not None:
 
       conn.close()
 
