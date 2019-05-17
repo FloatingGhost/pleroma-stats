@@ -115,6 +115,7 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
 
       print (error)
+      sys.exit()
 
 finally:
 
@@ -157,6 +158,7 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
 
       print (error)
+      sys.exit()
 
 finally:
 
@@ -169,44 +171,72 @@ finally:
 #  columns server | since | days | inserted_at | datetime
 #########################################################################################
 
-insert_row = """INSERT INTO unreached_servers(server, since, days, inserted_at)
+try:
+
+  conn = None
+  conn = psycopg2.connect(cstring_grafana)
+
+  cur = conn.cursor()
+
+  cur.execute("SELECT * from unreached_servers")
+  row = cur.fetchone()
+
+  if row > 0:
+
+    insert_row = """INSERT INTO unreached_servers(server, since, days, inserted_at)
              VALUES(%s,%s,%s,%s) ON CONFLICT DO NOTHING;"""
-conn = None
+    conn = None
 
-i = 0
+    i = 0
 
-while i < (len(hosts_unreached)):
+    while i < (len(hosts_unreached)):
 
-  try:
+      try:
 
-    conn = psycopg2.connect(cstring_grafana)
+        conn = psycopg2.connect(cstring_grafana)
 
-    cur = conn.cursor()
+        cur = conn.cursor()
 
-    # execute INSERT server, since, days, inserted_at
-    cur.execute(insert_row, (hosts_unreached[i], hosts_unreached_since[i], elapsed_days[i], inserted[i]))
-    # execute UPDATE
-    cur.execute("UPDATE unreached_servers SET days=(%s) where server=(%s)", (elapsed_days[i], hosts_unreached[i]))
-    cur.execute("UPDATE unreached_servers SET datetime=(%s) where server=(%s)", (ara, hosts_unreached[i]))    
+        # execute INSERT server, since, days, inserted_at
+        cur.execute(insert_row, (hosts_unreached[i], hosts_unreached_since[i], elapsed_days[i], inserted[i]))
+        # execute UPDATE
+        cur.execute("UPDATE unreached_servers SET days=(%s) where server=(%s)", (elapsed_days[i], hosts_unreached[i]))
+        cur.execute("UPDATE unreached_servers SET datetime=(%s) where server=(%s)", (ara, hosts_unreached[i]))    
     
-    # delete back on life servers
-    cur.execute("DELETE from unreached_servers where datetime <> %s", (ara,))
+        # delete back on life servers
+        cur.execute("DELETE from unreached_servers where datetime <> %s", (ara,))
     
-    # commit data
-    conn.commit()
+        # commit data
+        conn.commit()
 
-    # close the connection
+        # close the connection
+        cur.close()
+
+        i = i+1
+
+      except (Exception, psycopg2.DatabaseError) as error:
+
+        print(error)
+        sys.exit()
+
+      finally:
+
+        if conn is not None:
+
+          conn.close()
+
+  else:
+
     cur.close()
 
-    i = i+1
+except (Exception, psycopg2.DatabaseError) as error:
 
-  except (Exception, psycopg2.DatabaseError) as error:
+  print(error)
+  sys.exit()  
 
-    print (error)
+finally:
 
-  finally:
-
-    if conn is not None:
+  if conn is not None:
 
       conn.close()
 
@@ -250,6 +280,7 @@ try:
     ########################################################################################################
 
     try:
+
       conn = None
       conn = psycopg2.connect(cstring_grafana)
 
@@ -279,8 +310,11 @@ try:
       row = cur.fetchone()
       
       if row == None:
+
         posts_inici_setmana = num_posts
+
       else:
+
         posts_inici_setmana = row[0]
   
       cur.close()
@@ -289,10 +323,11 @@ try:
       posts_hour = num_posts - posts_before
       servers_hour = num_servers - servers_before
       fed_users_hour = fed_users - fed_users_before
-
+     
     except (Exception, psycopg2.DatabaseError) as error:
 
       print (error)
+      sys.exit()
 
     finally:
 
@@ -330,10 +365,11 @@ try:
   else:
   
     cur.close()
-
+  
 except (Exception, psycopg2.DatabaseError) as error:
   
   print (error)
+  sys.exit()
 
 finally:
   
@@ -372,6 +408,7 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
 
   print(error)
+  sys.exit()
 
 finally:
 
@@ -408,9 +445,14 @@ try:
   cur.close()
   
 except (Exception, psycopg2.DatabaseError) as error:
+
   print (error)
+  sys.exit()
+
 finally:
+
   if conn is not None:
+
       conn.close()
 
 ####################################################################################
