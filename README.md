@@ -41,5 +41,5 @@ DATETIME TIMESTAMPTZ
 3. Use your favourite scheduling method to set `./pleroma-stats.py` to run regularly.
 
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL datasource!
-It gets all needed data from Pleroma server API and Postgresql database and then store all stats to a new Postgresql database created above.
+It gets all needed data from Pleroma server API and its Postgresql database and then store stats to a new Postgresql database created above, to feed Grafana with their values.
 
