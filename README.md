@@ -40,6 +40,7 @@ DATETIME TIMESTAMPTZ
 
 3. Run 'python pleroma-stats-py' within Python Virtual Environment to test everything is OK. Install all needed packages with 'pip install package'
 4. Use your favourite scheduling method to set `./pleroma-stats.py` to run regularly.
+5. Add the datasource PostgreSQL to your Grafana, configuring Host (usually localhost:5432), Database (in the example is pleroma_stats) and User fields. 
 
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL datasource!
 It gets all needed data from Pleroma server API and its Postgresql database and then store stats to a new Postgresql database created above, to feed Grafana with their values.
