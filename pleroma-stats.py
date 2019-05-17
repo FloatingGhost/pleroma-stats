@@ -218,13 +218,15 @@ users_before = current_users
 posts_before = num_posts
 servers_before = num_servers
 users_hour = 0
+users_day = 0
+users_week = 0
 posts_hour = 0
 servers_hour = 0
 active = 0
 active30= 0
 posts_active = 0
 interactions = 0
-
+fed_users_hour = 0
 fed_users_before = fed_users
 
 #################################################################################
@@ -300,30 +302,30 @@ try:
 
     #posts_active = (num_posts-posts_inici_setmana)/active
 
-    print "-----------------"
-    print "Current users: "+str(current_users)
-    print "Users before: "+str(users_before)
-    print "New users x hour: "+str(users_hour)
-    print "-----------------"
-    print "Federated users: "+str(fed_users)
-    print "Fed users before: "+str(fed_users_before)
-    print "New fed users: "+str(fed_users_hour)
-    print "-----------------"
-    print "Posts: "+str(num_posts)
-    print "Posts before: "+str(posts_before)
-    print "Posts x hour: "+str(posts_hour)
-    print("Posts per user: %s "% posts_per_user)
-    print "Posts at beginning current week:"+str(posts_inici_setmana)
-    print "-----------------"
-    print "Federated servers: "+str(num_servers)
-    print "Federated servers before: "+str(servers_before)
-    print "Federating servers x hour: "+str(servers_hour)
-    print "-----------------"
-    print "Unreached servers: " + str(len(hosts_unreached))
-    print "-----------------"
-    #print "Posts this week:"+str(num_posts-posts_inici_setmana)
-    #print "Active users:"+str(active)
-    #print "Posts x active users: "+str(posts_active)
+    print ("-----------------")
+    print ("Current users: "+str(current_users))
+    print ("Users before: "+str(users_before))
+    print ("New users x hour: "+str(users_hour))
+    print ("-----------------")
+    print ("Federated users: "+str(fed_users))
+    print ("Fed users before: "+str(fed_users_before))
+    print ("New fed users: "+str(fed_users_hour))
+    print ("-----------------")
+    print ("Posts: "+str(num_posts))
+    print ("Posts before: "+str(posts_before))
+    print ("Posts x hour: "+str(posts_hour))
+    print ("Posts per user: %s "% posts_per_user)
+    print ("Posts at beginning current week:"+str(posts_inici_setmana))
+    print ("-----------------")
+    print ("Federated servers: "+str(num_servers))
+    print ("Federated servers before: "+str(servers_before))
+    print ("Federating servers x hour: "+str(servers_hour))
+    print ("-----------------")
+    print ("Unreached servers: " + str(len(hosts_unreached)))
+    print ("-----------------")
+    #print ("Posts this week:"+str(num_posts-posts_inici_setmana))
+    #print ("Active users:"+str(active))
+    #print ("Posts x active users: "+str(posts_active))
   
   else:
   
@@ -417,11 +419,11 @@ inc_hour = current_users - users_hour
 inc_day = current_users - users_day
 inc_week = current_users - users_week
 
-print "New users last hour: "+str(inc_hour)
-print "New users last day: "+str(inc_day)
-print "New users last week: "+str(inc_week)
-print "-----------------"
-print "   spla @ 2019   "
-print "-----------------"
+print ("New users last hour: "+str(inc_hour))
+print ("New users last day: "+str(inc_day))
+print ("New users last week: "+str(inc_week))
+print ("-----------------")
+print ("   spla @ 2019   ")
+print ("-----------------")
 
 ###################################################################################
