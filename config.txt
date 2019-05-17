@@ -1,0 +1,5 @@
+pleroma_hostname: your_pleroma_server
+pleroma_db: your_pleroma_db
+pleroma_db_user: pleroma_db_user        
+grafana_db: your_grafana_db  
+grafana_db_user: grafana_db_user  
