@@ -38,7 +38,7 @@ INSERTED_AT TIMESTAMP PRIMARY KEY NOT NULL,
 DATETIME TIMESTAMPTZ
 );
 
-3. Run 'python pleroma-stats-py' within Python Virtual Environment to test everything is OK. Install all needed packages with 'pip install <package>'
+3. Run 'python pleroma-stats-py' within Python Virtual Environment to test everything is OK. Install all needed packages with 'pip install package'
 4. Use your favourite scheduling method to set `./pleroma-stats.py` to run regularly.
 
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL datasource!
