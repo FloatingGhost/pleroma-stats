@@ -61,10 +61,8 @@ cstring_pleroma = "dbname=" + pleroma_db + " user=" + pleroma_db_user + " passwo
 # GET THE DATA from Pleroma server's API: user_count, domain_count and status count
 ###################################################################################
 
-# Get current timestamp
-ts = int(time.time())
-
 res = requests.get('https://' + pleroma_hostname + '/api/v1/instance?')
+
 current_users = res.json()['stats']['user_count']
 num_servers = res.json()['stats']['domain_count']
 num_posts = res.json()['stats']['status_count']
@@ -73,7 +71,7 @@ num_posts = res.json()['stats']['status_count']
 posts_per_user = int (num_posts / current_users)
 
 ################################################################################
-# get the federated hosts from Pleroma`s DB users table
+# get the federated hosts from Pleroma`s DB, table users
 ################################################################################
 
 try:
@@ -83,33 +81,34 @@ try:
 
       cur = conn.cursor()
 
-      # els developers de Pleroma ho fan aixi : SELECT distinct split_part(nickname, '@', 2) FROM users;
+      # Pleroma's developers did it this way : SELECT distinct split_part(nickname, '@', 2) FROM users;
       cur.execute("SELECT DISTINCT info FROM (select info->'source_data'->>'id' AS host FROM users WHERE local='f') AS info")
 
       host_federats = []
       
       for row in cur:
-         host_federats.append(row[0]) ## guarda les urls dels hosts en l'array host_federats
+
+         host_federats.append(row[0]) ## store hosts's urls to host_federats[] array
 
       fed_users = len(host_federats)
 
-      url_federades = []
+      federated_url = []
       i = 0
-      url_nova = ''
-      sep_dreta = '/users'
-      sep_esquerra = '(https://'
+      new_url = ''
+      sep_right = '/users'
+      sep_left = '(https://'
       
       while i < len(host_federats)-1:
 
-        url_nova = host_federats[i].rpartition(sep_dreta) 
-        url_nova = url_nova[0]
-        url_nova = url_nova.partition(sep_esquerra)
+        new_url = host_federats[i].rpartition(sep_right) 
+        new_url = new_url[0]
+        new_url = new_url.partition(sep_left)
 
-        url_federades.append(url_nova[2])
+        federated_url.append(new_url[2])
        
         i += 1
       
-      url_federades = sorted(set(url_federades))
+      federated_url = sorted(set(federated_url))
 
       cur.close()
 
@@ -229,7 +228,7 @@ interactions = 0
 fed_users_before = fed_users
 
 #################################################################################
-# Connect to Grafana's Postgresql DB to check if is empty (0 rows), table grafana
+# Connect to Grafana's Postgresql DB to check if is empty (0 rows), table stats
 #################################################################################
 
 try:
@@ -239,7 +238,7 @@ try:
 
   cur = conn.cursor()
 
-  cur.execute("SELECT * from grafana")
+  cur.execute("SELECT * from stats")
   row = cur.fetchone()
    
   if row > 0: 
@@ -254,7 +253,7 @@ try:
 
       cur = conn.cursor()
 
-      cur.execute("SELECT DISTINCT ON (datetime) users,posts,servers,federated_users,datetime FROM grafana WHERE datetime > current_timestamp - INTERVAL '70 minutes' ORDER BY datetime asc LIMIT 1")
+      cur.execute("SELECT DISTINCT ON (datetime) users,posts,servers,federated_users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '70 minutes' ORDER BY datetime asc LIMIT 1")
 
       row = cur.fetchone()
       
@@ -273,7 +272,7 @@ try:
         fed_users_before = row[3]
 
       # how many posts at the very beginning of the current week
-      cur.execute("SELECT DISTINCT ON (datetime) posts, datetime FROM grafana WHERE datetime > date_trunc('week', now()::timestamp) ORDER by datetime asc LIMIT 1")
+      cur.execute("SELECT DISTINCT ON (datetime) posts, datetime FROM stats WHERE datetime > date_trunc('week', now()::timestamp) ORDER by datetime asc LIMIT 1")
   
       row = cur.fetchone()
       
@@ -340,12 +339,12 @@ finally:
       conn.close()
 
 #################################################################################################################################################################################################
-# Connect to Grafana's Postgresql DB pleroma_grafana to save all data needed to graph stats
+# Connect to Grafana's Postgresql DB pleroma_stats to save all data needed to graph stats
 # used columns:                     
 # datetime | users | users_hour | posts | posts_hour | posts_user | interactions | active | active30 | servers | servers_hour | posts_active | federated_users | federated_users_hour 
 #----------+---------+-------------+-------+-------------+--------------+--------+-----------+----------+------------+---------------------------------------------------------------------------
 
-insert_row = """INSERT INTO grafana(datetime, users, users_hour, posts, posts_hour, posts_user, interactions, active, active30, servers, servers_hour, post_active, federated_users, federated_users_hour)
+insert_row = """INSERT INTO stats(datetime, users, users_hour, posts, posts_hour, posts_users, interactions, active, active30, servers, servers_hour, posts_active, federated_users, federated_users_hour)
              VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING datetime;"""
 conn = None
     
@@ -389,17 +388,17 @@ try:
 
   cur = conn.cursor()
 
-  cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM grafana WHERE datetime > current_timestamp - INTERVAL '70 minutes' ORDER BY datetime asc LIMIT 1")
+  cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '70 minutes' ORDER BY datetime asc LIMIT 1")
   
   row = cur.fetchone()
   users_hour = row[0]
   
-  cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM grafana WHERE datetime > current_timestamp - INTERVAL '25 hours' ORDER BY datetime asc LIMIT 1")
+  cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '25 hours' ORDER BY datetime asc LIMIT 1")
   
   row = cur.fetchone()
   users_day = row[0]
 
-  cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM grafana WHERE datetime > current_timestamp - INTERVAL '169 hours' ORDER BY datetime asc LIMIT 1")
+  cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '169 hours' ORDER BY datetime asc LIMIT 1")
   
   row = cur.fetchone()
   users_week = row[0]
