@@ -115,7 +115,7 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
 
       print (error)
-      sys.exit()
+      sys.exit(':-(')
 
 finally:
 
@@ -158,7 +158,7 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
 
       print (error)
-      sys.exit()
+      sys.exit(':-(')
 
 finally:
 
@@ -206,7 +206,7 @@ while i < (len(hosts_unreached)):
   except (Exception, psycopg2.DatabaseError) as error:
 
     print(error)
-    sys.exit()
+    sys.exit(':-(')
 
   finally:
 
@@ -301,7 +301,7 @@ try:
     except (Exception, psycopg2.DatabaseError) as error:
 
       print (error)
-      sys.exit()
+      sys.exit(':-(')
 
     finally:
 
@@ -353,7 +353,7 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
   
   print (error)
-  sys.exit()
+  sys.exit(':-(')
 
 finally:
   
@@ -392,7 +392,7 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
 
   print(error)
-  sys.exit()
+  sys.exit(':-(')
 
 finally:
 
@@ -431,7 +431,7 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
 
   print (error)
-  sys.exit()
+  sys.exit(':-(')
 
 finally:
 
