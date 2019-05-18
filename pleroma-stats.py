@@ -187,6 +187,7 @@ while i < (len(hosts_unreached)):
 
     # execute INSERT server, since, days, inserted_at
     cur.execute(insert_row, (hosts_unreached[i], hosts_unreached_since[i], elapsed_days[i], inserted[i]))
+
     # execute UPDATE
     cur.execute("UPDATE unreached_servers SET days=(%s) where server=(%s)", (elapsed_days[i], hosts_unreached[i]))
     cur.execute("UPDATE unreached_servers SET datetime=(%s) where server=(%s)", (ara, hosts_unreached[i]))    
@@ -308,9 +309,19 @@ try:
 
         conn.close()
 
-    #posts_active = (num_posts-posts_begin_week)/active
+    #if num_posts-posts_begin_week == 0:
+      
+      #posts_active = 0 
 
-    print ("-----------------")
+    #elif num_posts-posts_begin_week > 0:
+
+      #posts_active =(num_posts-posts_begin_week)/active
+
+    print (" ")
+    print ("##################################################")
+    print ("# " + pleroma_hostname + " stats" + " - " + str(ara) + " #")
+    print ("##################################################")
+    print (" ")
     print ("Current users: "+str(current_users))
     print ("Users before: "+str(users_before))
     print ("New users x hour: "+str(users_hour))
@@ -321,9 +332,10 @@ try:
     print ("-----------------")
     print ("Posts: "+str(num_posts))
     print ("Posts before: "+str(posts_before))
+    print ("Posts at beginning current week:"+str(posts_begin_week))
+    print ("Posts this week:"+str(num_posts-posts_begin_week))
     print ("Posts x hour: "+str(posts_hour))
     print ("Posts per user: %s "% posts_per_user)
-    print ("Posts at beginning current week:"+str(posts_begin_week))
     print ("-----------------")
     print ("Federated servers: "+str(num_servers))
     print ("Federated servers before: "+str(servers_before))
@@ -331,7 +343,6 @@ try:
     print ("-----------------")
     print ("Unreached servers: " + str(len(hosts_unreached)))
     print ("-----------------")
-    #print ("Posts this week:"+str(num_posts-posts_begin_week))
     #print ("Active users:"+str(active))
     #print ("Posts x active users: "+str(posts_active))
   
