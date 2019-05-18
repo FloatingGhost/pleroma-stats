@@ -284,11 +284,11 @@ try:
       
       if row == None:
 
-        posts_inici_setmana = num_posts
+        posts_begin_week = num_posts
 
       else:
 
-        posts_inici_setmana = row[0]
+        posts_begin_week = row[0]
   
       cur.close()
   
@@ -308,7 +308,7 @@ try:
 
         conn.close()
 
-    #posts_active = (num_posts-posts_inici_setmana)/active
+    #posts_active = (num_posts-posts_begin_week)/active
 
     print ("-----------------")
     print ("Current users: "+str(current_users))
@@ -323,7 +323,7 @@ try:
     print ("Posts before: "+str(posts_before))
     print ("Posts x hour: "+str(posts_hour))
     print ("Posts per user: %s "% posts_per_user)
-    print ("Posts at beginning current week:"+str(posts_inici_setmana))
+    print ("Posts at beginning current week:"+str(posts_begin_week))
     print ("-----------------")
     print ("Federated servers: "+str(num_servers))
     print ("Federated servers before: "+str(servers_before))
@@ -331,7 +331,7 @@ try:
     print ("-----------------")
     print ("Unreached servers: " + str(len(hosts_unreached)))
     print ("-----------------")
-    #print ("Posts this week:"+str(num_posts-posts_inici_setmana))
+    #print ("Posts this week:"+str(num_posts-posts_begin_week))
     #print ("Active users:"+str(active))
     #print ("Posts x active users: "+str(posts_active))
   
