@@ -260,7 +260,7 @@ try:
 
       cur = conn.cursor()
 
-      cur.execute("SELECT DISTINCT ON (datetime) users,posts,servers,federated_users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '70 minutes' ORDER BY datetime asc LIMIT 1")
+      cur.execute("SELECT DISTINCT ON (datetime) users,posts,servers,federated_users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '62 minutes' ORDER BY datetime asc LIMIT 1")
 
       row = cur.fetchone()
       
@@ -411,7 +411,7 @@ try:
 
   cur = conn.cursor()
 
-  cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '70 minutes' ORDER BY datetime asc LIMIT 1")
+  cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '62 minutes' ORDER BY datetime asc LIMIT 1")
   
   row = cur.fetchone()
   users_hour = row[0]
@@ -448,8 +448,8 @@ inc_week = current_users - users_week
 print ("New users last hour: "+str(inc_hour))
 print ("New users last day: "+str(inc_day))
 print ("New users last week: "+str(inc_week))
-print ("-----------------")
-print ("   spla @ 2019   ")
-print ("-----------------")
+print ("-----------------------------")
+print ("   spla@pleroma.cat @ 2019   ")
+print ("-----------------------------")
 
 ###################################################################################
