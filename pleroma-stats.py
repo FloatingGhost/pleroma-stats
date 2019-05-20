@@ -82,7 +82,8 @@ try:
 
       cur = conn.cursor()
 
-      # Pleroma's developers did it this way : SELECT distinct split_part(nickname, '@', 2) FROM users;
+      # Pleroma's developers did it this way to get federated servers: SELECT distinct split_part(nickname, '@', 2) FROM users;
+      # we need federated servers but also federated users
       cur.execute("SELECT DISTINCT info FROM (select info->'source_data'->>'id' AS host FROM users WHERE local='f') AS info")
 
       host_federats = []
@@ -91,7 +92,7 @@ try:
 
          host_federats.append(row[0]) ## store hosts's urls to host_federats[] array
 
-      fed_users = len(host_federats)
+      fed_users = len(host_federats)  # how many federated users
 
       federated_url = []
       i = 0
@@ -109,7 +110,7 @@ try:
        
         i += 1
       
-      federated_url = sorted(set(federated_url))
+      federated_url = sorted(set(federated_url)) # ordered list of federated servers
 
       ###############################################################################################
       # GETTING user_count, domain_count and status_count from Pleroma's API is not the best choice
