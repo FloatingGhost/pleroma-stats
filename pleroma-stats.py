@@ -59,6 +59,7 @@ cstring_pleroma = "dbname=" + pleroma_db + " user=" + pleroma_db_user + " passwo
 
 ###################################################################################
 # GET THE DATA from Pleroma server's API: user_count, domain_count and status count
+# ** DEACTIVATED ** See line 115 **
 ###################################################################################
 
 #res = requests.get('https://' + pleroma_hostname + '/api/v1/instance?')
@@ -113,7 +114,7 @@ try:
       ###############################################################################################
       # GETTING user_count, domain_count and status_count from Pleroma's API is not the best choice
       # because Pleroma code schedule update stats each hour.
-      # Better get them from the DB to get realtime counters
+      # Better get them from the Pleroma's DB to realtime counters
       ###############################################################################################
 
       # get user_count from Pleroma's DB 
