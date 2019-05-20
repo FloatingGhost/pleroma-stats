@@ -1,5 +1,5 @@
-Graphical Pleroma's stats with Python + Postgresql+ Grafana
-===========================================================
+Graphical Pleroma's stats with Python + Postgresql + Grafana
+============================================================
 
 Python script that gets *realtime* stats data from [Pleroma](https://pleroma.social)'s DB.
 
