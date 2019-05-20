@@ -43,7 +43,7 @@ DATETIME TIMESTAMPTZ
 5. Add the datasource PostgreSQL to your Grafana, configuring Host (usually localhost:5432), Database (in the example is pleroma_stats) and User fields. 
 
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL datasource!
-It gets all needed data from Pleroma server API and its Postgresql database and then store stats to a new Postgresql database created above, to feed Grafana with their values.
+It gets all needed data from Pleroma's Postgresql database and then store stats to a new Postgresql database created above, to feed Grafana with their values.
 
 ![Grafana showing Pleroma stats](Pleromastats.png)
 
