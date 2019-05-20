@@ -61,14 +61,14 @@ cstring_pleroma = "dbname=" + pleroma_db + " user=" + pleroma_db_user + " passwo
 # GET THE DATA from Pleroma server's API: user_count, domain_count and status count
 ###################################################################################
 
-res = requests.get('https://' + pleroma_hostname + '/api/v1/instance?')
+#res = requests.get('https://' + pleroma_hostname + '/api/v1/instance?')
 
-current_users = res.json()['stats']['user_count']
-num_servers = res.json()['stats']['domain_count']
-num_posts = res.json()['stats']['status_count']
+#current_users = res.json()['stats']['user_count']
+#num_servers = res.json()['stats']['domain_count']
+#num_posts = res.json()['stats']['status_count']
 
 # Posts per user
-posts_per_user = int (num_posts / current_users)
+#posts_per_user = int (num_posts / current_users)
 
 ################################################################################
 # get the federated hosts from Pleroma`s DB, table users
@@ -110,6 +110,24 @@ try:
       
       federated_url = sorted(set(federated_url))
 
+      ###############################################################################################
+      # GETTING user_count, domain_count and status_count from Pleroma's API is not the best choice
+      # because Pleroma code schedule update stats each hour.
+      # Better get them from the DB to get realtime counters
+      ###############################################################################################
+
+      # get user_count from Pleroma's DB 
+      cur.execute("select count(id) from users where local='t' AND info->>'deactivated'='false' AND email IS NOT NULL")
+      current_users = cur.fetchone()[0]
+
+      # get federated servers from Pleroma's DB
+      cur.execute("SELECT COUNT (distinct split_part(nickname, '@', 2)) FROM users where local='f'")      
+      num_servers = cur.fetchone()[0]       
+
+      # get status_count from Pleroma's DB
+      cur.execute("select SUM(CAST(info->>'note_count' AS INTEGER)) FROM users WHERE local='t'")
+      num_posts = cur.fetchone()[0]
+
       cur.close()
 
 except (Exception, psycopg2.DatabaseError) as error:
@@ -122,6 +140,13 @@ finally:
       if conn is not None:
 
         conn.close()
+
+#####################################################################################################
+# some calcs
+#####################################################################################################
+
+# Posts per user
+posts_per_user = int (num_posts / current_users)
 
 #####################################################################################################
 # get unreachable hosts from Pleroma's DB table instances                                           #
