@@ -12,7 +12,7 @@ import json
 import time
 import signal
 import sys
-import os.path        # For checking whether secrets file exists
+import os.path        # For checking whether config.txt file exists
 import requests       # For doing the web stuff, dummy!
 import operator       # allow assigning dictionary values to a variable 15/07/18
 import calendar
@@ -29,7 +29,7 @@ sys.setdefaultencoding('utf8')
 ###############################################################################
 
 def get_parameter( parameter, file_path ):
-    # Check if secrets file exists
+    # Check if config.txt file exists
     if not os.path.isfile(file_path):
         print("File %s not found, exiting."%file_path)
         sys.exit(0)
