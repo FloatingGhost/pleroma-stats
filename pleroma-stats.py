@@ -130,6 +130,16 @@ try:
       cur.execute("select SUM(CAST(info->>'note_count' AS INTEGER)) FROM users WHERE local='t'")
       num_posts = cur.fetchone()[0]
 
+      #############################################################################################
+      # 21.5.19 *New* Get last hour federated posts
+      cur.execute("select count(inserted_at) from activities WHERE data->>'type'='Create' AND inserted_at  > current_timestamp - INTERVAL '180 minutes'")
+      fed_posts_last_hour = cur.fetchone()[0]
+
+      ############################################################################################
+      # 22.5.19 *New* Get how many disc space is using the Pleroma's DB.
+      cur.execute("select pg_database_size(%s)", (pleroma_db,))
+      db_disk_space = (cur.fetchone()[0] / 1024) / 1024  ## to transform bytes to MB
+      
       cur.close()
 
 except (Exception, psycopg2.DatabaseError) as error:
@@ -259,6 +269,7 @@ posts_active = 0
 interactions = 0
 fed_users_hour = 0
 fed_users_before = fed_users
+disc_space = db_disk_space
 
 #################################################################################
 # Connect to Grafana's Postgresql DB to check if is empty (0 rows), table stats
@@ -276,9 +287,9 @@ try:
    
   if row > 0: 
 
-    ########################################################################################################
-    # Connect to Grafana's Postgresql DB to fetch last row local users, posts, servers and federated users
-    ########################################################################################################
+    ##############################################################################################################################################################
+    # Connect to Grafana's Postgresql DB to fetch last row local users, posts, servers, federated users and stored used_disk_space of the whole Pleroma's database
+    ##############################################################################################################################################################
 
     try:
 
@@ -287,7 +298,7 @@ try:
 
       cur = conn.cursor()
 
-      cur.execute("SELECT DISTINCT ON (datetime) users,posts,servers,federated_users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '62 minutes' ORDER BY datetime asc LIMIT 1")
+      cur.execute("SELECT DISTINCT ON (datetime) users,posts,servers,federated_users,used_disk_space,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '62 minutes' ORDER BY datetime asc LIMIT 1")
 
       row = cur.fetchone()
       
@@ -297,6 +308,7 @@ try:
         posts_before = num_posts
         servers_before = num_servers
         fed_users_before = fed_users
+        disc_space_before = db_disk_space
 
       else:
 
@@ -304,6 +316,7 @@ try:
         posts_before = row[1]
         servers_before = row[2]
         fed_users_before = row[3]
+        disc_space_before = row[4]
 
       # how many posts at the very beginning of the current week
       cur.execute("SELECT DISTINCT ON (datetime) posts, datetime FROM stats WHERE datetime > date_trunc('week', now()::timestamp) ORDER by datetime asc LIMIT 1")
@@ -324,6 +337,7 @@ try:
       posts_hour = num_posts - posts_before
       servers_hour = num_servers - servers_before
       fed_users_hour = fed_users - fed_users_before
+      inc_disc_space_hour = db_disk_space - disc_space_before
      
     except (Exception, psycopg2.DatabaseError) as error:
 
@@ -370,6 +384,9 @@ try:
     print ("-----------------")
     print ("Unreached servers: " + str(len(hosts_unreached)))
     print ("-----------------")
+    print ("Database used disc space (MB): " + str(db_disk_space))
+    print ("Database increase last hour (MB): " + str(inc_disc_space_hour))
+    print ("-----------------")
     #print ("Active users:"+str(active))
     #print ("Posts x active users: "+str(posts_active))
   
@@ -387,14 +404,14 @@ finally:
   if conn is not None:
       conn.close()
 
-#################################################################################################################################################################################################
+########################################################################################################################################################################################################################
 # Connect to Grafana's Postgresql DB pleroma_stats to save all data needed to graph stats
 # used columns:                     
-# datetime | users | users_hour | posts | posts_hour | posts_user | interactions | active | active30 | servers | servers_hour | posts_active | federated_users | federated_users_hour 
-#----------+---------+-------------+-------+-------------+--------------+--------+-----------+----------+------------+---------------------------------------------------------------------------
+# datetime | users | users_hour | posts | posts_hour | posts_user | interactions | active | active30 | servers | servers_hour | posts_active | federated_users | federated_users_hour | fed_posts_hour | used_disk_space
+#----------+---------+-------------+-------+-------------+--------------+--------+-----------+----------+------------+-------------------------------------------------------------------------------------------------
 
-insert_row = """INSERT INTO stats(datetime, users, users_hour, posts, posts_hour, posts_users, interactions, active, active30, servers, servers_hour, posts_active, federated_users, federated_users_hour)
-             VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING datetime;"""
+insert_row = """INSERT INTO stats(datetime, users, users_hour, posts, posts_hour, posts_users, interactions, active, active30, servers, servers_hour, posts_active, federated_users, federated_users_hour, fed_posts_hour, used_disk_space, disc_space_hour)
+             VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING datetime;"""
 conn = None
     
 ara = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -406,8 +423,8 @@ try:
   cur = conn.cursor()
   
   # execute INSERT 
-  cur.execute(insert_row, (ara, current_users, users_hour, num_posts, posts_hour, posts_per_user, interactions, active, active30, num_servers, servers_hour, posts_active, fed_users, fed_users_hour))
-  
+  cur.execute(insert_row, (ara, current_users, users_hour, num_posts, posts_hour, posts_per_user, interactions, active, active30, num_servers, servers_hour, posts_active, fed_users, fed_users_hour, fed_posts_last_hour, db_disk_space, inc_disc_space_hour))
+
   # get the id
   datetime = cur.fetchone()[0]
 

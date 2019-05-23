@@ -27,7 +27,9 @@ INTERACTIONS INT,
 ACTIVE INT, ACTIVE30 INT,
 SERVERS INT, SERVERS_HOUR INT,
 POSTS_ACTIVE INT,
-FEDERATED_USERS INT, FEDERATED_USERS_HOUR INT
+FEDERATED_USERS INT, FEDERATED_USERS_HOUR INT,
+FED_POSTS_HOUR INT, USED_DISK_SPACE INT,
+DISC_SPACE_HOUR INT
 );
 
 CREATE TABLE unreached_servers(
@@ -45,5 +47,21 @@ DATETIME TIMESTAMPTZ
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL datasource!
 It gets all needed data from Pleroma's Postgresql database and then store stats to a new Postgresql database created above, to feed Grafana with their values.
 
-![Grafana showing Pleroma stats](Pleromastats.png)
+What values can you track in Grafana?
 
+- Local users
+- New local users / hour
+- Local posts
+- Local posts / hour
+- Posts per user
+- Federated users
+- Federated servers
+- New federated servers / hour
+- Unreached servers (How many & which ones)
+
+* New in v1.2!
+- Federated posts / hour 
+- Disc space used by the Pleroma's database
+- Database disc space increase / hour
+
+![Grafana showing Pleroma stats](Pleromastats.png)
