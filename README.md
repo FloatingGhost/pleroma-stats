@@ -66,3 +66,4 @@ What values can you track in Grafana?
 - Database disc space increase / hour
 
 ![Grafana showing Pleroma stats](Pleromastats.png)
+![v1.2 - New graphs!](v1.2-Federated posts x hour and DB's disc space.png)
