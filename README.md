@@ -55,6 +55,7 @@ What values can you track in Grafana?
 - Local posts / hour
 - Posts per user
 - Federated users
+- New federated users / hour
 - Federated servers
 - New federated servers / hour
 - Unreached servers (How many & which ones)
