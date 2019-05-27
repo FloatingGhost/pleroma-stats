@@ -269,7 +269,7 @@ posts_active = 0
 interactions = 0
 fed_users_hour = 0
 fed_users_before = fed_users
-disc_space = db_disk_space
+inc_disc_space_hour = 0
 
 #################################################################################
 # Connect to Grafana's Postgresql DB to check if is empty (0 rows), table stats
@@ -339,6 +339,16 @@ try:
       fed_users_hour = fed_users - fed_users_before
       inc_disc_space_hour = db_disk_space - disc_space_before
      
+      ### calc average of disk space increase with media_proxy enabled (deactivated on 25/5/19 18:36
+      #cur.execute("select sum(disc_space_hour) from stats where datetime > '2019-05-22 15:00:00' and datetime < '2019-05-25 19:00:00'")
+      #with_media_proxy_total_MB = cur.fetchone()[0]
+      #print with_media_proxy_total_MB
+      #average_MB = with_media_proxy_total_MB / 75 # 75 hours running with media_proxy activated
+      #print average_MB      
+
+      #cur.close()
+
+
     except (Exception, psycopg2.DatabaseError) as error:
 
       print (error)
