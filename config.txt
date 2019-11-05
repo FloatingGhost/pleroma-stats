@@ -1,5 +1,7 @@
-pleroma_hostname: pleroma_server
-pleroma_db: pleroma_db_name
-pleroma_db_user: pleroma_db_user        
-grafana_db: grafana_db_name  
-grafana_db_user: grafana_db_user  
+pleroma_hostname: localhost
+pleroma_db: pleroma_prod
+pleroma_db_user: pleroma
+pleroma_db_pass: PASS
+grafana_db: pleroma_stats
+grafana_db_user: pleroma
+grafana_db_pass: PASS
