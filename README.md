@@ -24,7 +24,7 @@ pipenv install
 
 ```sql
 CREATE DATABASE pleroma_stats WITH OWNER pleroma;
-/c pleroma_stats;
+\c pleroma_stats;
 CREATE TABLE stats(
 DATETIME TIMESTAMPTZ PRIMARY KEY NOT NULL,
 USERS INT,
