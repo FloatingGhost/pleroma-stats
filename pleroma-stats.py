@@ -20,9 +20,10 @@ import psycopg2
 from psycopg2.extras import Json
 from psycopg2.extras import register_default_json
 from psycopg2.extras import RealDictCursor
+import traceback
+from importlib import reload
 
 reload(sys)
-sys.setdefaultencoding('utf8')
 
 ###############################################################################
 # INITIALISATION
@@ -52,11 +53,9 @@ pleroma_db = get_parameter("pleroma_db", config_filepath) # E.g., pleroma_prod
 pleroma_db_user = get_parameter("pleroma_db_user", config_filepath) # E.g., pleroma
 pleroma_db_password = get_parameter("pleroma_db_pass", config_filepath)
 grafana_db = get_parameter("grafana_db", config_filepath) # E.g., grafana_prod
-grafana_db_user = get_parameter("grafana_db_user", config_filepath) # E.g., pleroma
-grafana_db_password = get_parameter("grafana_db_pass", config_filepath)
 
 # Postgres connection strings
-cstring_grafana = "dbname=" + grafana_db + " user=" + grafana_db_user + " password=" + grafana_db_password + " host='localhost' port='5432'"
+cstring_grafana = "dbname=" + grafana_db + " user=" + pleroma_db_user + " password=" + pleroma_db_password + " host='localhost' port='5432'"
 cstring_pleroma = "dbname=" + pleroma_db + " user=" + pleroma_db_user + " password=" + pleroma_db_password + " host='localhost' port='5432'"
 
 ###################################################################################
@@ -146,7 +145,7 @@ try:
 
 except (Exception, psycopg2.DatabaseError) as error:
 
-      print (error)
+      print(traceback.format_exc())
       sys.exit(':-(')
 
 finally:
@@ -196,7 +195,7 @@ try:
 
 except (Exception, psycopg2.DatabaseError) as error:
 
-      print (error)
+      print (traceback.format_exc())
       sys.exit(':-(')
 
 finally:
@@ -244,7 +243,7 @@ while i < (len(hosts_unreached)):
 
   except (Exception, psycopg2.DatabaseError) as error:
 
-    print(error)
+    print(traceback.format_exc())
     sys.exit(':-(')
 
   finally:
@@ -286,8 +285,7 @@ try:
 
   cur.execute("SELECT * from stats")
   row = cur.fetchone()
-   
-  if row > 0: 
+  if row: 
 
     ##############################################################################################################################################################
     # Connect to Grafana's Postgresql DB to fetch last row local users, posts, servers, federated users and stored used_disk_space of the whole Pleroma's database
@@ -353,7 +351,7 @@ try:
 
     except (Exception, psycopg2.DatabaseError) as error:
 
-      print (error)
+      print (traceback.format_exc())
       sys.exit(':-(')
 
     finally:
@@ -408,7 +406,7 @@ try:
   
 except (Exception, psycopg2.DatabaseError) as error:
   
-  print (error)
+  print (traceback.format_exc())
   sys.exit(':-(')
 
 finally:
@@ -447,7 +445,7 @@ try:
 
 except (Exception, psycopg2.DatabaseError) as error:
 
-  print(error)
+  print(traceback.format_exc())
   sys.exit(':-(')
 
 finally:
@@ -486,7 +484,7 @@ try:
   
 except (Exception, psycopg2.DatabaseError) as error:
 
-  print (error)
+  print (traceback.format_exc())
   sys.exit(':-(')
 
 finally:
