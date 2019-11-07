@@ -85,7 +85,7 @@ try:
 
       # Pleroma's developers did it this way to get federated servers: SELECT distinct split_part(nickname, '@', 2) FROM users;
       # we need federated servers but also federated users
-      cur.execute("SELECT DISTINCT info FROM (select info->'source_data'->>'id' AS host FROM users WHERE local='f') AS info")
+      cur.execute("SELECT DISTINCT info FROM (select source_data->>'id' AS host FROM users WHERE local='f') AS info")
 
       host_federats = []
       
@@ -120,7 +120,7 @@ try:
       ###############################################################################################
 
       # get user_count from Pleroma's DB 
-      cur.execute("select count(id) from users where local='t' AND info->>'deactivated'='false' AND email IS NOT NULL")
+      cur.execute("select count(id) from users where local='t' AND deactivated=false AND email IS NOT NULL")
       current_users = cur.fetchone()[0]
 
       # get federated servers from Pleroma's DB
@@ -128,7 +128,7 @@ try:
       num_servers = cur.fetchone()[0]       
 
       # get status_count from Pleroma's DB
-      cur.execute("select SUM(CAST(info->>'note_count' AS INTEGER)) FROM users WHERE local='t'")
+      cur.execute("select SUM(note_count) FROM users WHERE local='t'")
       num_posts = cur.fetchone()[0]
 
       #############################################################################################
