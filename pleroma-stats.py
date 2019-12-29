@@ -3,7 +3,6 @@
 
 from six.moves import urllib
 import datetime
-#from datetime import datetime
 from subprocess import call
 import time
 import threading
@@ -85,10 +84,10 @@ try:
 
       # Pleroma's developers did it this way to get federated servers: SELECT distinct split_part(nickname, '@', 2) FROM users;
       # we need federated servers but also federated users
-      cur.execute("SELECT DISTINCT info FROM (select source_data->>'id' AS host FROM users WHERE local='f') AS info")
+      cur.execute("SELECT DISTINCT info FROM (SELECT info->>'id' AS host FROM users WHERE local='f') AS info")
 
       host_federats = []
-      
+
       for row in cur:
 
          host_federats.append(row[0]) ## store hosts's urls to host_federats[] array
@@ -100,17 +99,17 @@ try:
       new_url = ''
       sep_right = '/users'
       sep_left = '(https://'
-      
+
       while i < len(host_federats)-1:
 
-        new_url = host_federats[i].rpartition(sep_right) 
+        new_url = host_federats[i].rpartition(sep_right)
         new_url = new_url[0]
         new_url = new_url.partition(sep_left)
 
         federated_url.append(new_url[2])
-       
+
         i += 1
-      
+
       federated_url = sorted(set(federated_url)) # ordered list of federated servers
 
       ###############################################################################################
@@ -119,17 +118,20 @@ try:
       # Better get them from the Pleroma's DB to realtime counters
       ###############################################################################################
 
-      # get user_count from Pleroma's DB 
-      cur.execute("select count(id) from users where local='t' AND deactivated=false AND email IS NOT NULL")
+      # get user_count from Pleroma's DB
+      cur.execute("select count(id) from users where local='t' AND info->'deactivated'='false' AND email IS NOT NULL")
       current_users = cur.fetchone()[0]
 
       # get federated servers from Pleroma's DB
-      cur.execute("SELECT COUNT (distinct split_part(nickname, '@', 2)) FROM users where local='f'")      
-      num_servers = cur.fetchone()[0]       
+      cur.execute("SELECT COUNT (distinct split_part(nickname, '@', 2)) FROM users where local='f'")
+      num_servers = cur.fetchone()[0]
 
       # get status_count from Pleroma's DB
-      cur.execute("select SUM(note_count) FROM users WHERE local='t'")
-      num_posts = cur.fetchone()[0]
+      #cur.execute("select SUM(info->'note_count') FROM users WHERE local='t'")
+      #num_posts = cur.fetchone()[0]
+      # TODO! Fix this. info is a jsonb type and postgres really doesn't want
+      # you to sum it.
+      num_posts = 0
 
       #############################################################################################
       # 21.5.19 *New* Get last hour federated posts
@@ -140,7 +142,7 @@ try:
       # 22.5.19 *New* Get how many disc space is using the Pleroma's DB.
       cur.execute("select pg_database_size(%s)", (pleroma_db,))
       db_disk_space = (cur.fetchone()[0] / 1024) / 1024  ## to transform bytes to MB
-      
+
       cur.close()
 
 except (Exception, psycopg2.DatabaseError) as error:
@@ -228,11 +230,11 @@ while i < (len(hosts_unreached)):
 
     # execute UPDATE
     cur.execute("UPDATE unreached_servers SET days=(%s) where server=(%s)", (elapsed_days[i], hosts_unreached[i]))
-    cur.execute("UPDATE unreached_servers SET datetime=(%s) where server=(%s)", (ara, hosts_unreached[i]))    
-    
+    cur.execute("UPDATE unreached_servers SET datetime=(%s) where server=(%s)", (ara, hosts_unreached[i]))
+
     # delete back on life servers
     cur.execute("DELETE from unreached_servers where datetime <> %s", (ara,))
-    
+
     # commit data
     conn.commit()
 
@@ -285,7 +287,7 @@ try:
 
   cur.execute("SELECT * from stats")
   row = cur.fetchone()
-  if row: 
+  if row:
 
     ##############################################################################################################################################################
     # Connect to Grafana's Postgresql DB to fetch last row local users, posts, servers, federated users and stored used_disk_space of the whole Pleroma's database
@@ -301,7 +303,7 @@ try:
       cur.execute("SELECT DISTINCT ON (datetime) users,posts,servers,federated_users,used_disk_space,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '62 minutes' ORDER BY datetime asc LIMIT 1")
 
       row = cur.fetchone()
-      
+
       if row == None:
 
         users_before = current_users
@@ -320,9 +322,9 @@ try:
 
       # how many posts at the very beginning of the current week
       cur.execute("SELECT DISTINCT ON (datetime) posts, datetime FROM stats WHERE datetime > date_trunc('week', now()::timestamp) ORDER by datetime asc LIMIT 1")
-  
+
       row = cur.fetchone()
-      
+
       if row == None:
 
         posts_begin_week = num_posts
@@ -330,21 +332,21 @@ try:
       else:
 
         posts_begin_week = row[0]
-  
+
       cur.close()
-  
+
       users_hour = current_users - users_before
       posts_hour = num_posts - posts_before
       servers_hour = num_servers - servers_before
       fed_users_hour = fed_users - fed_users_before
       inc_disc_space_hour = db_disk_space - disc_space_before
-     
+
       ### calc average of disk space increase with media_proxy enabled (deactivated on 25/5/19 18:36
       #cur.execute("select sum(disc_space_hour) from stats where datetime > '2019-05-22 15:00:00' and datetime < '2019-05-25 19:00:00'")
       #with_media_proxy_total_MB = cur.fetchone()[0]
       #print with_media_proxy_total_MB
       #average_MB = with_media_proxy_total_MB / 75 # 75 hours running with media_proxy activated
-      #print average_MB      
+      #print average_MB
 
       #cur.close()
 
@@ -361,8 +363,8 @@ try:
         conn.close()
 
     #if num_posts-posts_begin_week == 0:
-      
-      #posts_active = 0 
+
+      #posts_active = 0
 
     #elif num_posts-posts_begin_week > 0:
 
@@ -399,40 +401,40 @@ try:
     print ("-----------------")
     #print ("Active users:"+str(active))
     #print ("Posts x active users: "+str(posts_active))
-  
+
   else:
-  
+
     cur.close()
-  
+
 except (Exception, psycopg2.DatabaseError) as error:
-  
+
   print (traceback.format_exc())
   sys.exit(':-(')
 
 finally:
-  
+
   if conn is not None:
       conn.close()
 
 ########################################################################################################################################################################################################################
 # Connect to Grafana's Postgresql DB pleroma_stats to save all data needed to graph stats
-# used columns:                     
+# used columns:
 # datetime | users | users_hour | posts | posts_hour | posts_user | interactions | active | active30 | servers | servers_hour | posts_active | federated_users | federated_users_hour | fed_posts_hour | used_disk_space
 #----------+---------+-------------+-------+-------------+--------------+--------+-----------+----------+------------+-------------------------------------------------------------------------------------------------
 
 insert_row = """INSERT INTO stats(datetime, users, users_hour, posts, posts_hour, posts_users, interactions, active, active30, servers, servers_hour, posts_active, federated_users, federated_users_hour, fed_posts_hour, used_disk_space, disc_space_hour)
              VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING datetime;"""
 conn = None
-    
+
 ara = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 try:
 
   conn = psycopg2.connect(cstring_grafana)
-  
+
   cur = conn.cursor()
-  
-  # execute INSERT 
+
+  # execute INSERT
   cur.execute(insert_row, (ara, current_users, users_hour, num_posts, posts_hour, posts_per_user, interactions, active, active30, num_servers, servers_hour, posts_active, fed_users, fed_users_hour, fed_posts_last_hour, db_disk_space, inc_disc_space_hour))
 
   # get the id
@@ -453,7 +455,7 @@ finally:
   if conn is not None:
 
     conn.close()
- 
+
 #######################################################################################################################
 # Connect to Postgresql DB to fetch users increase in the last hour, last day and last week
 ########################################################################################################################
@@ -466,22 +468,22 @@ try:
   cur = conn.cursor()
 
   cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '62 minutes' ORDER BY datetime asc LIMIT 1")
-  
+
   row = cur.fetchone()
   users_hour = row[0]
-  
+
   cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '25 hours' ORDER BY datetime asc LIMIT 1")
-  
+
   row = cur.fetchone()
   users_day = row[0]
 
   cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '169 hours' ORDER BY datetime asc LIMIT 1")
-  
+
   row = cur.fetchone()
   users_week = row[0]
 
   cur.close()
-  
+
 except (Exception, psycopg2.DatabaseError) as error:
 
   print (traceback.format_exc())
