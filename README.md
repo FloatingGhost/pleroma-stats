@@ -51,31 +51,8 @@ pipenv install
 
 3. `pipenv run python pleroma-stats.py`
 4. Use your favourite scheduling method to set `pleroma-stats.py` to run regularly, using pipenv.
-5. Add the datasource PostgreSQL to your Grafana, configuring Host (usually localhost:5432), Database (in the example is pleroma_stats) and User fields. 
+5. Add the datasource PostgreSQL to your Grafana, configuring Host (usually `localhost:5432`), Database (in the example is `pleroma_stats`) and User fields. 
 
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL datasource!
 It gets all needed data from Pleroma's Postgresql database and then store stats to a new Postgresql database created above, to feed Grafana with their values.
 
-What values can you track in Grafana?
-
-- Local users
-- New local users / hour
-- Local posts
-- Local posts / hour
-- Posts per user
-- Federated users
-- New federated users / hour
-- Federated servers
-- New federated servers / hour
-- Unreached servers (How many & which ones)
-
-* New in v1.2!
-- Federated posts / hour 
-- Disc space used by the Pleroma's database
-- Database disc space increase / hour
-
-![Grafana showing Pleroma stats](Pleromastats.png)
-
-* New v1.2 graphs!
-
-![v1.2 - New graphs](v1.2-graphs.png)
