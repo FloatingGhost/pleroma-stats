@@ -1,26 +1,26 @@
-Graphical Pleroma's stats with Python + Postgresql + Grafana
-============================================================
+# Graphical Pleroma stats with Python + PostgreSQL + Grafana
 
 Python script that gets *realtime* stats data from [Pleroma](https://pleroma.social)'s DB.
 
-### Dependencies
+## Dependencies
 
--   Python3
+-   Python 3
 -   Grafana
--   Postgresql server 
+-   PostgreSQL server 
 
 Install python deps:
+
 ```bash
-sudo pip3 install pipenv
+sudo python3 -m pip install pipenv
 pipenv install
 ```
 
-### Usage:
+## Usage:
 
 1. Edit `config.txt` to specify the hostname of the Pleroma server you would like to get data from, its DB 
    name and DB user and also the DB name and DB user for Grafana.
 
-2. Create one Postgresql database for Grafana, in example 'pleroma_stats', with two tables:
+2. Create one Postgresql database for Grafana, in this example, 'pleroma_stats', with two tables:
 
 ```sql
 CREATE DATABASE pleroma_stats WITH OWNER pleroma;
