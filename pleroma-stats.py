@@ -52,6 +52,7 @@ pleroma_db = get_parameter("pleroma_db", config_filepath) # E.g., pleroma_prod
 pleroma_db_user = get_parameter("pleroma_db_user", config_filepath) # E.g., pleroma
 pleroma_db_password = get_parameter("pleroma_db_pass", config_filepath)
 grafana_db = get_parameter("grafana_db", config_filepath) # E.g., grafana_prod
+instance_name = get_parameter("instance_name", config_filepath) # E.g., example.com 
 
 # Postgres connection strings
 cstring_grafana = "dbname=" + grafana_db + " user=" + pleroma_db_user + " password=" + pleroma_db_password + " host='localhost' port='5432'"
@@ -123,15 +124,12 @@ try:
       current_users = cur.fetchone()[0]
 
       # get federated servers from Pleroma's DB
-      cur.execute("SELECT COUNT (distinct split_part(nickname, '@', 2)) FROM users where local='f'")
+      cur.execute("SELECT COUNT (distinct split_part(nickname, '@', 2)) FROM users WHERE local='f'")
       num_servers = cur.fetchone()[0]
 
       # get status_count from Pleroma's DB
-      #cur.execute("select SUM(info->'note_count') FROM users WHERE local='t'")
-      #num_posts = cur.fetchone()[0]
-      # TODO! Fix this. info is a jsonb type and postgres really doesn't want
-      # you to sum it.
-      num_posts = 0
+      cur.execute("SELECT SUM(unlisted + public + private + direct) FROM counter_cache WHERE instance = " + instance_name + ";")
+      num_posts = cur.fetchone()[0]
 
       #############################################################################################
       # 21.5.19 *New* Get last hour federated posts
