@@ -3,4 +3,3 @@ pleroma_db: pleroma_prod
 pleroma_db_user: pleroma
 pleroma_db_pass: PASSWORD
 grafana_db: pleroma_stats
-instance_name: example.com
