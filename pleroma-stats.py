@@ -501,8 +501,8 @@ inc_week = current_users - users_week
 print ("New users last hour: "+str(inc_hour))
 print ("New users last day: "+str(inc_day))
 print ("New users last week: "+str(inc_week))
-print ("-----------------------------")
-print ("   spla@pleroma.cat @ 2019   ")
-print ("-----------------------------")
+print ("----------------------------------")
+print ("   matthew@jrgnsn.social @ 2020   ")
+print ("----------------------------------")
 
 ###################################################################################
