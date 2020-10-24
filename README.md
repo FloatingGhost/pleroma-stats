@@ -56,3 +56,10 @@ pipenv install
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL datasource!
 It gets all needed data from Pleroma's Postgresql database and then store stats to a new Postgresql database created above, to feed Grafana with their values.
 
+## Grafana Dashboard
+
+There's a JSON model of a Grafana dashboard in the `contrib/` directory.
+(Feel free to improve it and send a patch!)
+
+![](https://drop.jrgnsn.net/UCX5.png)
+![](https://drop.jrgnsn.net/tYk5.png)
