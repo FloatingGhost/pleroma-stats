@@ -423,7 +423,7 @@ insert_row = """INSERT INTO stats(datetime, users, users_hour, posts, posts_hour
              VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING datetime;"""
 conn = None
 
-ara = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+ara = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
 try:
 
