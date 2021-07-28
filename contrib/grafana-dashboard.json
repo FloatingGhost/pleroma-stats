@@ -22,7 +22,6 @@
       "datasource": "pleroma_stats",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -59,9 +58,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -115,7 +115,6 @@
       "datasource": "pleroma_stats",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -148,9 +147,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -191,7 +191,6 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -224,9 +223,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -266,7 +266,6 @@
       "datasource": "pleroma_stats",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -299,9 +298,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -341,7 +341,6 @@
       "datasource": "pleroma_stats",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -374,9 +373,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -416,9 +416,6 @@
       "datasource": "pleroma_stats",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -455,9 +452,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -509,6 +507,10 @@
     {
       "collapsed": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -529,12 +531,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 4,
       "fillGradient": 0,
       "gridPos": {
@@ -561,7 +557,7 @@
         "alertThreshold": true
       },
       "percentage": true,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -572,41 +568,41 @@
       "targets": [
         {
           "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"system\",instance=\"192.168.228.3:9100\"}[5m])) * 100",
-            "interval": "",
-            "legendFormat": "Busy System",
-            "refId": "A"
-          },
-          {
-            "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"user\",instance=\"192.168.228.3:9100\"}[5m])) * 100",
-              "interval": "",
-              "legendFormat": "Busy User",
-              "refId": "B"
-            },
-            {
-              "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"iowait\",instance=\"192.168.228.3:9100\"}[5m])) * 100",
-                "interval": "",
-                "legendFormat": "Busy IO wait",
-                "refId": "C"
-              },
-              {
-                "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\".*irq\",instance=\"192.168.228.3:9100\"}[5m])) * 100",
-                  "interval": "",
-                  "legendFormat": "Busy IRQs",
-                  "refId": "D"
-                },
-                {
-                  "expr": "sum (rate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',instance=\"192.168.228.3:9100\"}[5m])) * 100",
-                    "interval": "",
-                    "legendFormat": "Busy Other",
-                    "refId": "E"
-                  },
-                  {
-                    "expr": "sum by (mode)(rate(node_cpu_seconds_total{mode=\"idle\",instance=\"192.168.228.3:9100\"}[5m])) * 100",
-                      "interval": "",
-                      "legendFormat": "Idle",
-                      "refId": "F"
-                    }
-                  ],
+          "interval": "",
+          "legendFormat": "Busy System",
+          "refId": "A"
+        },
+        {
+          "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"user\",instance=\"192.168.228.3:9100\"}[5m])) * 100",
+          "interval": "",
+          "legendFormat": "Busy User",
+          "refId": "B"
+        },
+        {
+          "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\"iowait\",instance=\"192.168.228.3:9100\"}[5m])) * 100",
+          "interval": "",
+          "legendFormat": "Busy IO wait",
+          "refId": "C"
+        },
+        {
+          "expr": "sum by (instance)(rate(node_cpu_seconds_total{mode=\".*irq\",instance=\"192.168.228.3:9100\"}[5m])) * 100",
+          "interval": "",
+          "legendFormat": "Busy IRQs",
+          "refId": "D"
+        },
+        {
+          "expr": "sum (rate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',instance=\"192.168.228.3:9100\"}[5m])) * 100",
+          "interval": "",
+          "legendFormat": "Busy Other",
+          "refId": "E"
+        },
+        {
+          "expr": "sum by (mode)(rate(node_cpu_seconds_total{mode=\"idle\",instance=\"192.168.228.3:9100\"}[5m])) * 100",
+          "interval": "",
+          "legendFormat": "Idle",
+          "refId": "F"
+        }
+      ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
@@ -657,7 +653,6 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "unit": "µs"
         },
         "overrides": []
@@ -688,7 +683,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -755,12 +750,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -787,7 +776,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -851,6 +840,10 @@
     {
       "collapsed": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -869,26 +862,6 @@
       "dashes": false,
       "datasource": "pleroma_stats",
       "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -915,7 +888,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1059,6 +1032,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1090,19 +1064,20 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": true,
+            "desc": false,
             "displayName": "days"
           }
         ]
       },
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "table",
           "group": [],
+          "hide": false,
           "metricColumn": "none",
           "rawQuery": false,
-          "rawSql": "SELECT\n  datetime AS \"time\",\n  days AS \"days\",\n  server\nFROM unreached_servers\nORDER BY 1",
+          "rawSql": "SELECT\n  datetime AS \"time\",\n  days AS \"days\",\n  server,\n  since\nFROM unreached_servers\nWHERE\n  $__timeFilter(datetime)\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -1126,17 +1101,45 @@
                 ],
                 "type": "column"
               }
+            ],
+            [
+              {
+                "params": [
+                  "since"
+                ],
+                "type": "column"
+              }
             ]
           ],
           "table": "unreached_servers",
           "timeColumn": "datetime",
           "timeColumnType": "timestamptz",
-          "where": []
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
       "title": "Unreachable Servers",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "days",
+                "server",
+                "since"
+              ]
+            }
+          }
+        }
+      ],
       "type": "table"
     },
     {
@@ -1145,12 +1148,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "pleroma_stats",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1178,7 +1175,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1303,12 +1300,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "pleroma_stats",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1335,7 +1326,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1469,12 +1460,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "pleroma_stats",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1501,7 +1486,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1632,6 +1617,10 @@
     {
       "collapsed": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1651,7 +1640,6 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "unit": "µs"
         },
         "overrides": []
@@ -1682,7 +1670,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1740,35 +1728,35 @@
       }
     }
   ],
-"refresh": "1m",
-"schemaVersion": 26,
-"style": "dark",
-"tags": [
-  "pleroma"
-],
-"templating": {
-  "list": []
-},
-"time": {
-  "from": "now-24h",
-  "to": "now"
-},
-"timepicker": {
-  "refresh_intervals": [
-    "5s",
-    "10s",
-    "30s",
-    "1m",
-    "5m",
-    "15m",
-    "30m",
-    "1h",
-    "2h",
-    "1d"
-  ]
-},
-"timezone": "",
-"title": "pleroma-stats",
-"uid": "I3eKLmRN7Pj52Q",
-"version": 27
+  "refresh": "1m",
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [
+    "pleroma"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "jrgnsn-pleroma",
+  "uid": "mTHsEzNGz",
+  "version": 27
 }
