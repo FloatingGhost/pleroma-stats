@@ -119,7 +119,7 @@ try:
       ###############################################################################################
 
       # get user_count from Pleroma's DB
-      cur.execute("select count(id) from users where local='t' AND deactivated='false' AND email IS NOT NULL")
+      cur.execute("select count(id) from users where local='t' AND is_active='true' AND email IS NOT NULL")
       current_users = cur.fetchone()[0]
 
       # get federated servers from Pleroma's DB
