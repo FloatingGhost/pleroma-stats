@@ -467,7 +467,8 @@ try:
   cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '62 minutes' ORDER BY datetime asc LIMIT 1")
 
   row = cur.fetchone()
-  users_hour = row[0]
+  if row is not None:
+    users_hour = row[0]
 
   cur.execute("SELECT DISTINCT ON (datetime) users,datetime FROM stats WHERE datetime > current_timestamp - INTERVAL '25 hours' ORDER BY datetime asc LIMIT 1")
 
