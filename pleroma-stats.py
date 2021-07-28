@@ -1,24 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from six.moves import urllib
 import datetime
-from subprocess import call
-import time
-import threading
 import os
-import json
-import time
-import signal
 import sys
-import os.path        # For checking whether config.txt file exists
-import requests       # For doing the web stuff, dummy!
-import operator       # allow assigning dictionary values to a variable 15/07/18
-import calendar
+import os.path 
 import psycopg2
-from psycopg2.extras import Json
-from psycopg2.extras import register_default_json
-from psycopg2.extras import RealDictCursor
 import traceback
 from importlib import reload
 
