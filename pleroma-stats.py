@@ -53,21 +53,6 @@ cstring_pleroma = "dbname={} user={} password={} host={}".format(
 	pleroma_db, pleroma_db_user, pleroma_db_password, "'localhost' port='5432'")
 
 ###############################################################################
-# GET THE DATA from Pleroma server's API: user_count, domain_count, and status
-# counts
-# ** DEACTIVATED ** See line 115 **
-###############################################################################
-
-# res = requests.get('https://' + pleroma_hostname + '/api/v1/instance?')
-
-# current_users = res.json()['stats']['user_count']
-# num_servers = res.json()['stats']['domain_count']
-# num_posts = res.json()['stats']['status_count']
-
-# Posts per user
-# posts_per_user = int (num_posts / current_users)
-
-###############################################################################
 # get the federated hosts from Pleroma`s DB, table users
 ###############################################################################
 
@@ -378,15 +363,6 @@ try:
 			if conn is not None:
 				conn.close()
 
-		# if num_posts-posts_begin_week == 0:
-
-			# posts_active = 0
-
-		# elif num_posts-posts_begin_week > 0:
-
-			# posts_active =(num_posts-posts_begin_week)/active
-
-			print(" ")
 			print("##################################################")
 			print("# " + pleroma_hostname + " stats" + " - " + str(ara) + " #")
 			print("##################################################")
