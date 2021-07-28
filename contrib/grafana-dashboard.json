@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 1,
+  "id": 11,
   "links": [],
   "panels": [
     {
@@ -507,10 +507,6 @@
     {
       "collapsed": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -840,10 +836,6 @@
     {
       "collapsed": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1321,7 +1313,7 @@
       },
       "lines": true,
       "linewidth": 1,
-      "nullPointMode": "null",
+      "nullPointMode": "connected",
       "options": {
         "alertThreshold": true
       },
@@ -1332,10 +1324,12 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:190",
           "alias": "disc_space_hour",
           "yaxis": 2
         },
         {
+          "$$hashKey": "object:191",
           "alias": "Disk Space (+/-)",
           "yaxis": 2
         }
@@ -1433,6 +1427,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:210",
           "format": "decmbytes",
           "label": null,
           "logBase": 1,
@@ -1441,8 +1436,10 @@
           "show": true
         },
         {
-          "format": "short",
-          "label": null,
+          "$$hashKey": "object:211",
+          "decimals": 2,
+          "format": "decmbytes",
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1617,10 +1614,6 @@
     {
       "collapsed": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1738,7 +1731,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -1757,6 +1750,6 @@
   },
   "timezone": "",
   "title": "jrgnsn-pleroma",
-  "uid": "mTHsEzNGz",
-  "version": 27
+  "uid": "0_bsQwWnk",
+  "version": 1
 }
