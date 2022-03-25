@@ -43,5 +43,3 @@ Grafana with their values.
 
 There's a JSON model of a Grafana dashboard in the `contrib/` directory.
 (Feel free to improve it and send a patch!)
-
-[Screenshots](/prplecake/pleroma-stats/wiki/Grafana-Dashboard)
