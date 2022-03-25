@@ -28,14 +28,14 @@ sudo python -m pip install psycopg2
     ```
 
 3. `python pleroma-stats.py`
-4. Use your favourite scheduling method to set `pleroma-stats.py` to run
+4. Use your favorite scheduling method to set `pleroma-stats.py` to run
    regularly.
-5. Add the datasource PostgreSQL to your Grafana, configuring Host
+5. Add the data source PostgreSQL to your Grafana, configuring Host
    (usually `localhost:5432`), Database (in the example is
    `pleroma_stats`) and User fields.
 
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL
-datasource! It gets all needed data from Pleroma's PostgreSQL database
+data source! It gets all needed data from Pleroma's PostgreSQL database
 and then store stats to a new PostgreSQL database created above, to feed
 Grafana with their values.
 
