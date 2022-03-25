@@ -19,33 +19,11 @@ sudo python -m pip install psycopg2
 1. Edit `config.txt` to specify the hostname of the Pleroma server you would like to get data from, its DB 
    name and DB user and also the DB name and DB user for Grafana.
 
-2. Create one Postgresql database for Grafana, in this example, 'pleroma_stats', with two tables:
+2. Create one Postgresql database for Grafana, in this example,
+   'pleroma_stats':
 
-    ```sql
-    CREATE DATABASE pleroma_stats WITH OWNER pleroma;
-    \c pleroma_stats;
-    CREATE TABLE stats(
-      DATETIME TIMESTAMPTZ PRIMARY KEY NOT NULL,
-      USERS INT,
-      USERS_HOUR INT,
-      POSTS INT,
-      POSTS_HOUR INT, POSTS_USERS INT,
-      INTERACTIONS INT,
-      ACTIVE INT, ACTIVE30 INT,
-      SERVERS INT, SERVERS_HOUR INT,
-      POSTS_ACTIVE INT,
-      FEDERATED_USERS INT, FEDERATED_USERS_HOUR INT,
-      FED_POSTS_HOUR INT, USED_DISK_SPACE INT,
-      DISC_SPACE_HOUR INT
-    );
-    
-    CREATE TABLE unreached_servers(
-      SERVER VARCHAR(30),
-      SINCE TIMESTAMP,
-      DAYS VARCHAR(30),
-      INSERTED_AT TIMESTAMP PRIMARY KEY NOT NULL,
-      DATETIME TIMESTAMPTZ
-    );
+    ```text
+    sudo -Hu postgres psql < setup_database.sql
     ```
 
 3. `python pleroma-stats.py`
