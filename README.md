@@ -11,8 +11,7 @@ Python script that gets *realtime* stats data from [Pleroma](https://pleroma.soc
 Install python deps:
 
 ```bash
-sudo python3 -m pip install pipenv
-pipenv install
+sudo python -m pip install psycopg2
 ```
 
 ## Usage:
@@ -49,8 +48,8 @@ pipenv install
     );
     ```
 
-3. `pipenv run python pleroma-stats.py`
-4. Use your favourite scheduling method to set `pleroma-stats.py` to run regularly, using pipenv.
+3. `python pleroma-stats.py`
+4. Use your favourite scheduling method to set `pleroma-stats.py` to run regularly.
 5. Add the datasource PostgreSQL to your Grafana, configuring Host (usually `localhost:5432`), Database (in the example is `pleroma_stats`) and User fields. 
 
 Then you could graph your Pleroma server stats with Grafana's PostgreSQL datasource!
