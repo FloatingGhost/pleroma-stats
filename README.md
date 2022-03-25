@@ -5,7 +5,7 @@ Python script that gets *realtime* stats data from [Pleroma](https://pleroma.soc
 ## Dependencies
 
 -   Python 3
--   Grafana
+-   Grafana (for visualizations)
 -   PostgreSQL server 
 
 Install python deps:
@@ -38,5 +38,4 @@ It gets all needed data from Pleroma's Postgresql database and then store stats 
 There's a JSON model of a Grafana dashboard in the `contrib/` directory.
 (Feel free to improve it and send a patch!)
 
-![](https://drop.jrgnsn.net/UCX5.png)
-![](https://drop.jrgnsn.net/tYk5.png)
+[Screenshots](/prplecake/pleroma-stats/wiki/Grafana-Dashboard)
